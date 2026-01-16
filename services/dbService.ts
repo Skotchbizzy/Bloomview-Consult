@@ -1,5 +1,3 @@
-import { ServiceItem } from "../types";
-
 export interface Lead {
   id: string;
   name: string;
@@ -10,65 +8,131 @@ export interface Lead {
   timestamp: number;
 }
 
-const LEADS_KEY = 'bloomview_leads';
-const SUBS_KEY = 'bloomview_subscribers';
+export interface AnalyticsData {
+  distribution: Array<{ service: string; count: number }>;
+  trends: Array<{ day: string; count: number }>;
+}
 
 /**
- * DATABASE SERVICE (Simulated Backend)
- * This layer handles data persistence. In a production environment,
- * these methods would call an external API (Express/Supabase/Firebase).
+ * CONNECTIVITY CONFIGURATION:
+ * We use 127.0.0.1 instead of localhost for better cross-platform compatibility.
  */
+const API_BASE_URL = 'http://127.0.0.1:5000/api';
+
 export const dbService = {
-  // Save a new contact inquiry
-  async saveLead(data: Omit<Lead, 'id' | 'status' | 'timestamp'>): Promise<boolean> {
+  // Checks if the backend is reachable
+  async checkConnection(): Promise<boolean> {
     try {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      const leads = this.getLeads();
-      const newLead: Lead = {
-        ...data,
-        id: Math.random().toString(36).substr(2, 9),
-        status: 'new',
-        timestamp: Date.now()
-      };
-      
-      localStorage.setItem(LEADS_KEY, JSON.stringify([newLead, ...leads]));
-      return true;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1500);
+      const response = await fetch(`${API_BASE_URL}/health`, { 
+        method: 'GET', 
+        signal: controller.signal 
+      });
+      clearTimeout(timeoutId);
+      return response.ok;
     } catch (e) {
-      console.error("DB Error saving lead:", e);
       return false;
     }
   },
 
-  // Get all inquiries (Admin Only)
-  getLeads(): Lead[] {
-    const data = localStorage.getItem(LEADS_KEY);
-    return data ? JSON.parse(data) : [];
+  async handleFetchError(error: any, context: string) {
+    const isHttps = window.location.protocol === 'https:';
+    
+    console.group(`🚨 Bloomview Connection Failed: ${context}`);
+    console.error("Technical Error:", error);
+    
+    if (isHttps) {
+      console.warn("CRITICAL: You are on an HTTPS site trying to reach an HTTP local server. This is 'Mixed Content'.");
+      console.warn("FIX: Look at your browser address bar. Click the 'Site Settings' or 'Lock' icon and 'Allow Insecure Content'.");
+    } else {
+      console.warn("FIX: Ensure you have run 'node server.js' in your terminal and that port 5000 is open.");
+    }
+    console.groupEnd();
+    
+    return null;
   },
 
-  // Update lead status
-  updateLeadStatus(id: string, status: Lead['status']): void {
-    const leads = this.getLeads();
-    const updated = leads.map(l => l.id === id ? { ...l, status } : l);
-    localStorage.setItem(LEADS_KEY, JSON.stringify(updated));
+  async saveLead(data: Omit<Lead, 'id' | 'status' | 'timestamp'>): Promise<boolean> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      return response.ok;
+    } catch (e) {
+      await this.handleFetchError(e, "Submit Lead");
+      return false;
+    }
   },
 
-  // Delete lead
-  deleteLead(id: string): void {
-    const leads = this.getLeads();
-    localStorage.setItem(LEADS_KEY, JSON.stringify(leads.filter(l => l.id !== id)));
+  async getLeads(passcode: string): Promise<Lead[]> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/leads`, {
+        headers: { 'Authorization': `Bearer ${passcode}` }
+      });
+      if (!response.ok) return [];
+      return await response.json();
+    } catch (e) {
+      await this.handleFetchError(e, "Fetch Leads");
+      return [];
+    }
   },
 
-  // Newsletter subscription
+  async getAnalytics(passcode: string): Promise<AnalyticsData | null> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/analytics`, {
+        headers: { 'Authorization': `Bearer ${passcode}` }
+      });
+      if (!response.ok) return null;
+      return await response.json();
+    } catch (e) {
+      await this.handleFetchError(e, "Fetch Analytics");
+      return null;
+    }
+  },
+
+  async updateLeadStatus(id: string, status: Lead['status'], passcode: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/leads/${id}`, {
+        method: 'PATCH',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${passcode}`
+        },
+        body: JSON.stringify({ status }),
+      });
+      return response.ok;
+    } catch (e) {
+      await this.handleFetchError(e, "Update Lead Status");
+      return false;
+    }
+  },
+
+  async deleteLead(id: string, passcode: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/leads/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${passcode}` }
+      });
+      return response.ok;
+    } catch (e) {
+      await this.handleFetchError(e, "Delete Lead");
+      return false;
+    }
+  },
+
   async subscribe(email: string): Promise<boolean> {
     try {
-      const subs = JSON.parse(localStorage.getItem(SUBS_KEY) || '[]');
-      if (!subs.includes(email)) {
-        localStorage.setItem(SUBS_KEY, JSON.stringify([...subs, email]));
-      }
-      return true;
+      const response = await fetch(`${API_BASE_URL}/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      return response.ok;
     } catch (e) {
+      await this.handleFetchError(e, "Newsletter Subscribe");
       return false;
     }
   }

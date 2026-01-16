@@ -74,14 +74,14 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Phone & WhatsApp</p>
-                  <p className="text-lg font-bold">+234 (0) 800 BLOOMVIEW</p>
+                  <p className="text-lg font-bold">+234 817 282 3346</p>
                 </div>
               </div>
             </div>
 
             <div className="pt-6">
               <a 
-                href="https://wa.me/2348000000000" 
+                href="https://wa.me/2348172823346" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center space-x-3 bg-brand-gold text-brand-indigo px-10 py-4 rounded-full font-extrabold hover:brightness-110 transition-all shadow-2xl shadow-brand-gold/10 transform hover:-translate-y-1"

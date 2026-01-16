@@ -10,10 +10,12 @@ import { Footer } from './components/Footer';
 import { ChatAssistant } from './components/ChatAssistant';
 import { ScrollToTop } from './components/ScrollToTop';
 import { AdminPortal } from './components/AdminPortal';
+import { LegalModal } from './components/LegalModal';
 import { Shield } from 'lucide-react';
 
 const App: React.FC = () => {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [legalDoc, setLegalDoc] = useState<'privacy' | 'terms' | null>(null);
 
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col selection:bg-brand-indigo selection:text-white">
@@ -26,7 +28,7 @@ const App: React.FC = () => {
         <Blog />
         <Contact />
       </main>
-      <Footer />
+      <Footer onOpenLegal={setLegalDoc} />
       <ScrollToTop />
       <ChatAssistant />
       
@@ -40,6 +42,7 @@ const App: React.FC = () => {
       </button>
 
       <AdminPortal isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} />
+      <LegalModal type={legalDoc} onClose={() => setLegalDoc(null)} />
     </div>
   );
 };

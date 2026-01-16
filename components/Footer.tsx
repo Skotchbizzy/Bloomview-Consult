@@ -3,7 +3,11 @@ import { Facebook, Twitter, Instagram, Linkedin, Globe, Check } from 'lucide-rea
 import { NAV_ITEMS } from '../constants';
 import { dbService } from '../services/dbService';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenLegal: (type: 'privacy' | 'terms') => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
@@ -169,8 +173,18 @@ export const Footer: React.FC = () => {
         <div className="pt-12 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-[11px] uppercase tracking-[0.15em] text-slate-400 font-bold">
           <p>© {new Date().getFullYear()} Bloomview Consults. Excellence in Growth.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-brand-indigo transition-colors">Privacy Policy</a>
-            <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-brand-indigo transition-colors">Terms of Service</a>
+            <button 
+              onClick={() => onOpenLegal('privacy')} 
+              className="hover:text-brand-indigo transition-colors uppercase"
+            >
+              Privacy Policy
+            </button>
+            <button 
+              onClick={() => onOpenLegal('terms')} 
+              className="hover:text-brand-indigo transition-colors uppercase"
+            >
+              Terms of Service
+            </button>
             <div className="flex items-center space-x-1">
               <Globe size={12} />
               <span>International</span>
