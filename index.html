@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Bloomview Consults | IT Solutions, Study Abroad & Academic Support</title>
+    <meta name="title" content="Bloomview Consults | IT Solutions, Study Abroad & Academic Support" />
+    <meta name="description" content="Bloomview Consults empowers growth through expert IT solutions, study abroad education consultancy (UK, USA, Canada), and academic research support. See opportunities clearly and grow confidently." />
+    <meta name="keywords" content="Bloomview Consults, IT solutions, study abroad consultancy, academic support, research assistance, UK student visa, Canada education, USA scholarships, digital transformation, web development" />
+    <meta name="author" content="Bloomview Consults" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://bloomviewconsults.com/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bloomviewconsults.com/" />
+    <meta property="og:title" content="Bloomview Consults | Clarity, Opportunity, Solutions" />
+    <meta property="og:description" content="Professional IT solutions, study abroad consultancy, and academic support services designed to help you grow confidently." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&h=630&auto=format&fit=crop" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://bloomviewconsults.com/" />
+    <meta property="twitter:title" content="Bloomview Consults | Clarity, Opportunity, Solutions" />
+    <meta property="twitter:description" content="Empowering people through education and technology. Join the Bloomview growth journey today." />
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&h=630&auto=format&fit=crop" />
+
+    <!-- PWA & Mobile App Meta Tags -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2D1B5E" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Bloomview" />
+    
+    <!-- JSON-LD Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Bloomview Consults",
+        "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop",
+        "@id": "https://bloomviewconsults.com",
+        "url": "https://bloomviewconsults.com",
+        "telephone": "+234800BLOOMVIEW",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Main Street",
+          "addressLocality": "Lagos",
+          "addressCountry": "NG"
+        },
+        "sameAs": [
+          "https://www.instagram.com/bloomviewconsults?igsh=NnBid2Jqemxic2J1",
+          "https://www.linkedin.com/company/bloomview-consults"
+        ],
+        "description": "Solutions-driven brand focused on IT solutions, study-abroad education consultancy, and academic support services.",
+        "services": [
+          "IT Solutions",
+          "Study Abroad Consultancy",
+          "Academic Research Support"
+        ]
+      }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                indigo: '#2D1B5E',
+                gold: '#FDE047',
+                light: '#F8F7FF'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            },
+            animation: {
+              'bounce-slow': 'bounce 3s infinite',
+              'fadeIn': 'fadeIn 1s ease-out forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+      }
+      .bg-bloom-gradient {
+        background: linear-gradient(135deg, #f8f7ff 0%, #ffffff 100%);
+      }
+      .heading-serif {
+        font-family: 'Playfair Display', serif;
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+      ::selection {
+        background: #2D1B5E;
+        color: white;
+      }
+    </style>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "@google/genai": "https://esm.sh/@google/genai@1.37.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.475.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed', err));
+        });
+      }
+    </script>
+  </body>
+</html>
